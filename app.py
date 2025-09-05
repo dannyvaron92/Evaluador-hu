@@ -36,7 +36,7 @@ def index():
         tecnica = int(request.form['tecnica'])
         desarrollo = int(request.form['desarrollo'])
         dependencias = int(request.form['dependencias'])
-        claridad = int(request.form['claridad'])
+        claridad = int(request.form['claridad']) - 3 * -1
         riesgos = int(request.form['riesgos'])
 
         total = tecnica + desarrollo + dependencias + claridad + riesgos
