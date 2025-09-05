@@ -2,22 +2,10 @@
 import os
 from flask import Flask, render_template, request, redirect
 import sqlite3
+from recomendador import redondear_fibonacci, obtener_recomendacion
 
 app = Flask(__name__)
 DB_NAME = 'hu_evaluations.db'
-
-FIBONACCI = [0, 1, 2, 3, 5, 8, 13, 21]
-
-def redondear_fibonacci(valor):
-    return min(FIBONACCI, key=lambda x: abs(x - valor))
-
-def obtener_recomendacion(fib_valor):
-    if fib_valor <= 8:
-        return "✅ Historia aceptable."
-    elif fib_valor < 13 and fib_valor > 8:
-        return "⚠️ Considera dividir o refinar la historia."
-    else:
-        return "❌ División recomendada."
 
 def init_db():
     conn = sqlite3.connect(DB_NAME)
@@ -77,4 +65,3 @@ def index():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
