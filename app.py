@@ -41,7 +41,7 @@ def index():
 
         total = tecnica + desarrollo + dependencias + claridad + riesgos
         fib_valor = redondear_fibonacci(total)
-        recomendacion = obtener_recomendacion(fib_valor)
+        recomendacion = obtener_recomendacion(total)
 
         conn = sqlite3.connect(DB_NAME)
         cursor = conn.cursor()
