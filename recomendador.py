@@ -1,55 +1,22 @@
-# recomendador.py
-
-from typing import Dict, Tuple
-
-# Lista de números Fibonacci relevantes para estimación ágil
-FIBONACCI_SERIE = [1, 2, 3, 5, 8, 13, 21, 34]
-
-def transformar_claridad(valor: int) -> int:
-    """Aplica la fórmula especial para claridad de requisitos."""
-    return (valor - 3) * -1
-
-def aproximar_fibonacci(valor: int) -> int:
-    """Aproxima el valor al número Fibonacci más cercano."""
-    diferencias = {fib: abs(fib - valor) for fib in FIBONACCI_SERIE}
-    return min(diferencias, key=diferencias.get)
-
-def calcular_puntaje_total(criterios: Dict[str, int]) -> int:
-    """Calcula la suma total de criterios con fórmula especial para claridad."""
-    total = (
-        criterios.get("complejidad_tecnica", 0) +
-        criterios.get("esfuerzo_desarrollo", 0) +
-        criterios.get("dependencias_externas", 0) +
-        transformar_claridad(criterios.get("claridad_requisitos", 0)) +
-        criterios.get("riesgos_incertidumbre", 0)
-    )
-    return total
-
-def generar_recomendacion(hu: str, criterios: Dict[str, int], criterios_pivote: Dict[str, int], hu_pivote: str) -> Tuple[int, str]:
+def recomendar(historia_usuario):
     """
-    Calcula el puntaje Fibonacci sugerido y genera una recomendación textual.
-    
-    Parámetros:
-    - hu: texto de la historia de usuario a evaluar
-    - criterios: diccionario con los 5 criterios de la historia
-    - criterios_pivote: diccionario con los 5 criterios de la historia pivote
-    - hu_pivote: texto de la historia pivote
-    
-    Retorna:
-    - puntaje Fibonacci sugerido
-    - recomendación textual
+    Genera recomendaciones ampliadas basadas en la historia de usuario.
     """
-    total_actual = calcular_puntaje_total(criterios)
-    total_pivote = calcular_puntaje_total(criterios_pivote)
+    recomendaciones = []
 
-    puntaje_sugerido = aproximar_fibonacci(total_actual)
+    if "login" in historia_usuario.lower():
+        recomendaciones.append("Considera agregar autenticación con OAuth2.")
+        recomendaciones.append("Valida credenciales en backend con hashing seguro.")
+    if "registro" in historia_usuario.lower():
+        recomendaciones.append("Incluye validación de campos obligatorios.")
+        recomendaciones.append("Envía correo de confirmación al usuario.")
+    if "perfil" in historia_usuario.lower():
+        recomendaciones.append("Permite edición de datos personales.")
+        recomendaciones.append("Agrega opción para subir foto de perfil.")
+    if "admin" in historia_usuario.lower():
+        recomendaciones.append("Agrega panel de administración con métricas.")
+        recomendaciones.append("Incluye gestión de usuarios y roles.")
+    if not recomendaciones:
+        recomendaciones.append("No se encontraron recomendaciones específicas. Revisa si puedes agregar criterios funcionales, técnicos o de negocio.")
 
-    diferencia = total_actual - total_pivote
-    if diferencia > 0:
-        mensaje = f"La historia '{hu}' parece más compleja que la historia pivote '{hu_pivote}' en base a los criterios ingresados."
-    elif diferencia < 0:
-        mensaje = f"La historia '{hu}' parece menos compleja que la historia pivote '{hu_pivote}'."
-    else:
-        mensaje = f"La historia '{hu}' tiene una complejidad similar a la historia pivote '{hu_pivote}'."
-
-    return puntaje_sugerido, mensaje
+    return recomendaciones
