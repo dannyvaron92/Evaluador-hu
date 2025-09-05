@@ -40,7 +40,7 @@ def redondear_fibonacci(valor):
 def obtener_recomendacion(fib_valor):
     if fib_valor <= 8:
         return "✅ Historia aceptable."
-    elif fib_valor > 8 and < 13:
+    elif fib_valor > 8 and fib_valor < 13:
         return "⚠️ Considera dividir o refinar la historia."
     else:
         return "❌ División recomendada."
