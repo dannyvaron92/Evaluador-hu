@@ -1,10 +1,11 @@
 
 import os
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 import sqlite3
 from recomendador import redondear_fibonacci, obtener_recomendacion
 
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'
 DB_NAME = 'hu_evaluations.db'
 
 def init_db():
@@ -32,15 +33,22 @@ init_db()
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        descripcion = request.form['descripcion']
-        tecnica = int(request.form['tecnica'])
-        desarrollo = int(request.form['desarrollo'])
-        dependencias = int(request.form['dependencias'])
-        claridad = int(request.form['claridad'])
-        riesgos = int(request.form['riesgos'])
+        descripcion = request.form.get('descripcion', '').strip()
+        try:
+            tecnica = int(request.form.get('tecnica', ''))
+            desarrollo = int(request.form.get('desarrollo', ''))
+            dependencias = int(request.form.get('dependencias', ''))
+            claridad = int(request.form.get('claridad', ''))
+            riesgos = int(request.form.get('riesgos', ''))
+        except ValueError:
+            flash("❌ Todos los campos deben contener valores numéricos.", "error")
+            return redirect('/')
+
+        if not descripcion:
+            flash("❌ La descripción no puede estar vacía.", "error")
+            return redirect('/')
 
         claridad_mod = (claridad - 3 *) -1
-
         total = tecnica + desarrollo + dependencias + claridad_mod + riesgos
         fib_valor = redondear_fibonacci(total)
         recomendacion = obtener_recomendacion(total)
@@ -55,6 +63,7 @@ def index():
         conn.commit()
         conn.close()
 
+        flash("✅ Historia evaluada y guardada exitosamente.", "success")
         return redirect('/')
 
     conn = sqlite3.connect(DB_NAME)
