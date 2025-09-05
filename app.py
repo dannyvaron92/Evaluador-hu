@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import datetime
 import os
-from recomendador 
-import generar_recomendacion
 
 app = Flask(__name__)
 DB_PATH = "hu_evaluations.db"
@@ -33,28 +31,7 @@ if not os.path.exists(DB_PATH):
 # Escala Fibonacci
 fibonacci_scale = [0, 1, 2, 3, 5, 8, 13, 21]
 
-def obtener_historia_pivote():
-    import sqlite3
-    conn = sqlite3.connect('tu_base_de_datos.db')  # Ajusta el nombre si es diferente
-    cursor = conn.cursor()
-    
-    cursor.execute("SELECT texto, complejidad_tecnica, esfuerzo_desarrollo, dependencias_externas, claridad_requisitos, riesgos_incertidumbre FROM historia_pivote LIMIT 1")
-    fila = cursor.fetchone()
-    conn.close()
 
-    if fila:
-        return {
-            'texto': fila[0],
-            'criterios': {
-                'complejidad_tecnica': fila[1],
-                'esfuerzo_desarrollo': fila[2],
-                'dependencias_externas': fila[3],
-                'claridad_requisitos': fila[4],
-                'riesgos_incertidumbre': fila[5]
-            }
-        }
-    else:
-        return None
 
 
 def redondear_fibonacci(valor):
