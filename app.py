@@ -52,7 +52,10 @@ def index():
         claridad = int(request.form['claridad'])
         riesgos = int(request.form['riesgos'])
 
-        total = tecnica + desarrollo + dependencias + claridad + riesgos
+        
+        claridad_transformada = (claridad - 3) * -1
+        total = tecnica + desarrollo + dependencias + claridad_transformada + riesgos
+
         fib_valor = redondear_fibonacci(total)
         recomendacion = obtener_recomendacion(fib_valor)
         fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
