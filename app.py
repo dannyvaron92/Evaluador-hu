@@ -48,7 +48,7 @@ def index():
             flash("❌ La descripción no puede estar vacía.", "error")
             return redirect('/')
 
-        claridad_mod = (claridad - 3) * -1
+        claridad_mod = (claridad - 5) * -1
         total = tecnica + desarrollo + dependencias + claridad_mod + riesgos
         fib_valor = redondear_fibonacci(total)
         recomendacion = obtener_recomendacion(total)
